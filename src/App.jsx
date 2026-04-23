@@ -58,6 +58,7 @@ const App = () => {
   const [selectedProject, setSelectedProject] = useState(null);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [showContactModal, setShowContactModal] = useState(false);
+  const [expandedImage, setExpandedImage] = useState(null);
 
   useEffect(() => {
     const handleScroll = () => setScrolled(window.scrollY > 30);
@@ -442,6 +443,55 @@ const App = () => {
         </div>
       </section>
 
+      {/* Projects Section */}
+      <section id="projects" className="py-20 md:py-32 bg-[#F8FAFC]">
+        <div className="max-w-[1440px] mx-auto px-6 md:px-10">
+          <div className="flex flex-col md:flex-row md:items-end justify-between gap-8 mb-12 md:mb-20">
+            <h2 className="text-4xl md:text-5xl font-black tracking-tighter uppercase italic">标杆实战案例</h2>
+            <div className="flex flex-wrap gap-2 text-wrap">
+              {['all', 'Hackathon', 'Agent', 'AIGC'].map(tab => (
+                <button 
+                  key={tab}
+                  onClick={() => setActiveTab(tab)}
+                  className={`px-6 py-2.5 rounded-full text-[10px] font-black transition-all uppercase tracking-widest border ${activeTab === tab ? 'bg-[#3370FF] text-white border-[#3370FF]' : 'bg-white text-slate-500 border-slate-100'}`}
+                >
+                   {tab === 'all' ? '全部' : 
+                    tab === 'Hackathon' ? '黑客松极客' : 
+                    tab === 'AIGC' ? '工业化 AIGC' : tab}
+                </button>
+              ))}
+            </div>
+          </div>
+
+          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-10">
+            {filteredProjects.map((p) => (
+              <div 
+                key={p.id}
+                onClick={() => p.details && setSelectedProject(p)}
+                className={`bg-white rounded-3xl md:rounded-[40px] overflow-hidden flex flex-col shadow-sm hover:shadow-2xl transition-all duration-500 group border border-transparent hover:border-blue-100 p-8 md:p-10 ${p.details ? 'cursor-pointer' : ''}`}
+              >
+                <div className="flex flex-wrap gap-2 mb-6">
+                  {p.tags.map(tag => (
+                    <span key={tag} className="px-3 py-1.5 bg-slate-50 text-slate-400 text-[10px] font-black rounded-full uppercase tracking-tighter">{tag}</span>
+                  ))}
+                </div>
+                <h3 className="text-xl md:text-2xl font-black mb-4 leading-tight group-hover:text-[#3370FF] transition-colors uppercase">{p.title}</h3>
+                <p className="text-slate-500 text-sm mb-8 flex-1 font-medium leading-relaxed">{p.shortDesc}</p>
+                <div className="pt-6 border-t border-slate-50 flex items-center justify-between">
+                  <div>
+                    <div className="text-[10px] text-slate-400 font-bold uppercase mb-1">Impact</div>
+                    <div className="text-[#3370FF] text-xl font-black italic">{p.impact}</div>
+                  </div>
+                  <div className="w-12 h-12 bg-slate-50 rounded-xl flex items-center justify-center group-hover:bg-[#3370FF] group-hover:text-white transition-all transform group-hover:translate-x-2">
+                    <ArrowRight size={20} />
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
       {/* Expertise Matrix Section */}
       <section id="expertise" className="py-20 md:py-32 bg-[#F8FAFC] border-b border-slate-100">
         <div className="max-w-[1440px] mx-auto px-6 md:px-10">
@@ -506,55 +556,6 @@ const App = () => {
                   {item.tags.map((tag, j) => (
                     <span key={j} className="px-3 py-1.5 bg-slate-50 rounded-full text-[10px] font-black text-slate-400 uppercase tracking-wider border border-slate-100 group-hover:border-blue-100 transition-colors">{tag}</span>
                   ))}
-                </div>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* Projects Section */}
-      <section id="projects" className="py-20 md:py-32 bg-[#F8FAFC]">
-        <div className="max-w-[1440px] mx-auto px-6 md:px-10">
-          <div className="flex flex-col md:flex-row md:items-end justify-between gap-8 mb-12 md:mb-20">
-            <h2 className="text-4xl md:text-5xl font-black tracking-tighter uppercase italic">标杆实战案例</h2>
-            <div className="flex flex-wrap gap-2 text-wrap">
-              {['all', 'Hackathon', 'Agent', 'AIGC'].map(tab => (
-                <button 
-                  key={tab}
-                  onClick={() => setActiveTab(tab)}
-                  className={`px-6 py-2.5 rounded-full text-[10px] font-black transition-all uppercase tracking-widest border ${activeTab === tab ? 'bg-[#3370FF] text-white border-[#3370FF]' : 'bg-white text-slate-500 border-slate-100'}`}
-                >
-                   {tab === 'all' ? '全部' : 
-                    tab === 'Hackathon' ? '黑客松极客' : 
-                    tab === 'AIGC' ? '工业化 AIGC' : tab}
-                </button>
-              ))}
-            </div>
-          </div>
-
-          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-10">
-            {filteredProjects.map((p) => (
-              <div 
-                key={p.id}
-                onClick={() => p.details && setSelectedProject(p)}
-                className={`bg-white rounded-3xl md:rounded-[40px] overflow-hidden flex flex-col shadow-sm hover:shadow-2xl transition-all duration-500 group border border-transparent hover:border-blue-100 p-8 md:p-10 ${p.details ? 'cursor-pointer' : ''}`}
-              >
-                <div className="flex flex-wrap gap-2 mb-6">
-                  {p.tags.map(tag => (
-                    <span key={tag} className="px-3 py-1.5 bg-slate-50 text-slate-400 text-[10px] font-black rounded-full uppercase tracking-tighter">{tag}</span>
-                  ))}
-                </div>
-                <h3 className="text-xl md:text-2xl font-black mb-4 leading-tight group-hover:text-[#3370FF] transition-colors uppercase">{p.title}</h3>
-                <p className="text-slate-500 text-sm mb-8 flex-1 font-medium leading-relaxed">{p.shortDesc}</p>
-                <div className="pt-6 border-t border-slate-50 flex items-center justify-between">
-                  <div>
-                    <div className="text-[10px] text-slate-400 font-bold uppercase mb-1">Impact</div>
-                    <div className="text-[#3370FF] text-xl font-black italic">{p.impact}</div>
-                  </div>
-                  <div className="w-12 h-12 bg-slate-50 rounded-xl flex items-center justify-center group-hover:bg-[#3370FF] group-hover:text-white transition-all transform group-hover:translate-x-2">
-                    <ArrowRight size={20} />
-                  </div>
                 </div>
               </div>
             ))}
@@ -808,7 +809,10 @@ const App = () => {
                   <div className="space-y-20 md:space-y-32">
                     {selectedProject.details.screenshots.map((screen, idx) => (
                       <div key={idx} className={`flex flex-col ${idx % 2 !== 0 ? 'lg:flex-row-reverse' : 'lg:flex-row'} gap-12 items-center`}>
-                        <div className="flex-1 w-full bg-slate-50 rounded-3xl overflow-hidden aspect-video border border-slate-100 shadow-xl group hover:shadow-2xl transition-all duration-700">
+                        <div 
+                          className="flex-1 w-full bg-slate-50 rounded-3xl overflow-hidden aspect-video border border-slate-100 shadow-xl group hover:shadow-2xl transition-all duration-700 cursor-zoom-in"
+                          onClick={() => setExpandedImage(screen.imgUrl)}
+                        >
                            <img src={screen.imgUrl} alt={screen.title} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-1000" />
                         </div>
                         <div className="flex-[0.8] space-y-6">
@@ -1013,6 +1017,33 @@ const App = () => {
         </div>
       )}
 
+
+      {/* Image Expansion Modal (Lightbox) */}
+      {expandedImage && (
+        <div className="fixed inset-0 z-[400] flex items-center justify-center animate-in fade-in duration-300">
+          <div 
+            onClick={() => setExpandedImage(null)} 
+            className="absolute inset-0 bg-slate-900/98 backdrop-blur-2xl cursor-zoom-out" 
+          />
+          
+          <button 
+            onClick={() => setExpandedImage(null)}
+            className="fixed top-8 right-8 p-4 bg-white/10 backdrop-blur-md text-white rounded-full hover:bg-white hover:text-black transition-all z-[410] border border-white/20 shadow-2xl group"
+          >
+            <X size={28} className="group-hover:rotate-90 transition-transform duration-300" />
+          </button>
+
+          <div className="relative w-full h-full flex items-center justify-center p-4 md:p-8 pointer-events-none">
+            <div className="relative w-full h-full flex items-center justify-center animate-in zoom-in-95 duration-500 ease-out pointer-events-auto">
+              <img 
+                src={expandedImage} 
+                alt="Expanded" 
+                className="max-w-full max-h-full w-auto h-auto object-contain rounded-xl md:rounded-2xl shadow-[0_0_80px_rgba(0,0,0,0.5)] border border-white/10"
+              />
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 };
